@@ -1,0 +1,14 @@
+# OS / editor cruft
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# Superseded design direction — kept on disk, not part of the published site
+_archive/
+
+# In case build tooling is added later
+node_modules/
+npm-debug.log*
