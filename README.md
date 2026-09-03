@@ -44,6 +44,7 @@ _archive/             Superseded design direction (gitignored)
 | | |
 |---|---|
 | **What we are** | A data analytics and operational intelligence company |
+| **Footer** | Closing CTA band · brand + contact · Solutions · Company · Industries · legal row |
 | **Sectors** | Mining & Resources · Industrial & Manufacturing · Energy & Utilities · Infrastructure & Construction · Agriculture · Health |
 | **Capabilities** | Data Analytics & BI · Operational Intelligence · Performance Monitoring & Reporting · Safety & Risk Analytics · Asset & Equipment Data Management · Custom Digital Platforms & Dashboards · Data Integration & Automation |
 
@@ -98,11 +99,15 @@ Under POPIA the Information Officer defaults to the head of the organisation, an
 - **Social links point at `#`.** Add real URLs or remove them.
 - **Verify the Information Regulator's current contact details** before relying on the reference in the privacy policy — the page links to inforegulator.org.za rather than hardcoding an address, but confirm it is still correct.
 - **Counters** state only verifiable facts (established 2023, 7 capabilities, 6 sectors). Add performance figures only once verified.
-- **GeoCorelytics and SiteSafety** are described as being in final development and testing. Keep that status accurate — `terms-of-use.html` and `disclaimer.html` both rely on it.
+- **Development status wording has been removed** from the marketing pages — GeoCorelytics and SiteSafety are now presented as available platforms. `terms-of-use.html` and `disclaimer.html` still carry conditional clauses ("where this site describes a system as being in development or testing"), which are harmless but no longer describe anything. Remove them if you want the legal pages tightened.
 
 ## Images
 
-10 photographs in `assets/img/`, JPEG at quality 82, 1.5 MB total. Generation prompts are kept in `image-brief.md`. To re-cut from fresh PNGs:
+10 photographs in `assets/img/`, JPEG at quality 82, 1.5 MB total.
+
+**The repositioning has outgrown the current set** — it is mining- and plant-heavy, which under-represents four of the six sectors. [`image-brief.md`](image-brief.md) lists what is needed: 6 sector images at 1200×1000, 3 capability images at 840×1000, and two optional additions. Four sector cards currently borrow an existing photograph; Agriculture and Health run on the designed gradient panel alone, which is intentional — the panel looks complete without one.
+
+To re-cut from fresh PNGs:
 
 ```powershell
 powershell -File assets/img/_convert-images.ps1 -SrcDir "C:\path\to\pngs" -OutDir assets\img
