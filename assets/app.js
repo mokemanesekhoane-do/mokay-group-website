@@ -68,7 +68,7 @@
   if (slider) {
     var slides = [].slice.call(slider.querySelectorAll('.slide'));
     var dotWrap = slider.querySelector('[data-dots]');
-    var current = 0;
+    var slideIndex = 0;
     var timer = null;
     var DELAY = 6500;
 
@@ -82,20 +82,20 @@
     });
 
     function go(i) {
-      current = (i + slides.length) % slides.length;
-      slides.forEach(function (s, n) { s.classList.toggle('active', n === current); });
-      dots.forEach(function (d, n) { d.classList.toggle('on', n === current); });
+      slideIndex = (i + slides.length) % slides.length;
+      slides.forEach(function (s, n) { s.classList.toggle('active', n === slideIndex); });
+      dots.forEach(function (d, n) { d.classList.toggle('on', n === slideIndex); });
       restart();
     }
     function restart() {
       if (timer) clearInterval(timer);
-      if (!reduced && slides.length > 1) timer = setInterval(function () { go(current + 1); }, DELAY);
+      if (!reduced && slides.length > 1) timer = setInterval(function () { go(slideIndex + 1); }, DELAY);
     }
 
     var prev = slider.querySelector('[data-prev]');
     var next = slider.querySelector('[data-next]');
-    if (prev) prev.addEventListener('click', function () { go(current - 1); });
-    if (next) next.addEventListener('click', function () { go(current + 1); });
+    if (prev) prev.addEventListener('click', function () { go(slideIndex - 1); });
+    if (next) next.addEventListener('click', function () { go(slideIndex + 1); });
 
     slider.addEventListener('mouseenter', function () { if (timer) clearInterval(timer); });
     slider.addEventListener('mouseleave', restart);
@@ -199,18 +199,18 @@
   };
 
   // public gate — window.mokayConsent.allows('analytics')
-  var current = read();
+  var consent = read();
   window.mokayConsent = {
-    get: function () { return current; },
+    get: function () { return consent; },
     allows: function (category) {
       if (category === 'necessary') return true;
-      return !!(current && current[category]);
+      return !!(consent && consent[category]);
     },
     reopen: function () { openBanner(true); }
   };
   var announce = function () {
     try {
-      document.dispatchEvent(new CustomEvent('mokay:consent', { detail: current }));
+      document.dispatchEvent(new CustomEvent('mokay:consent', { detail: consent }));
     } catch (e) {}
   };
 
@@ -234,20 +234,20 @@
     banner.querySelectorAll('input[data-cat]').forEach(function (box) {
       var cat = box.getAttribute('data-cat');
       if (cat === 'necessary') { box.checked = true; return; }
-      box.checked = !!(current && current[cat]);
+      box.checked = !!(consent && consent[cat]);
     });
   }
   function save(prefs) {
-    current = write(prefs);
+    consent = write(prefs);
     announce();
     closeBanner();
   }
 
   if (banner) {
-    if (!current) {
+    if (!consent) {
       // let the page settle before interrupting, and re-check on firing in case
       // the visitor already answered via the footer link in the meantime
-      setTimeout(function () { if (!current) openBanner(false); }, 900);
+      setTimeout(function () { if (!consent) openBanner(false); }, 900);
     }
     banner.addEventListener('click', function (ev) {
       var act = ev.target.closest('[data-consent]');

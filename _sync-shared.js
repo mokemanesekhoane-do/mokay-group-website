@@ -80,17 +80,6 @@ const FOOTER = `
         </ul>
       </div>
       <div>
-        <h5>Legal</h5>
-        <ul>
-          <li><a href="privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="data-protection.html">Data Protection Notice</a></li>
-          <li><a href="cookie-policy.html">Cookie Policy</a></li>
-          <li><a href="terms-of-use.html">Terms of Use</a></li>
-          <li><a href="disclaimer.html">Disclaimer</a></li>
-          <li><a href="#" data-cookie-settings>Cookie Settings</a></li>
-        </ul>
-      </div>
-      <div>
         <h5>Get In Touch</h5>
         <ul>
           <li class="contact-li">${ico(MAIL)}<a href="mailto:info@mokaygroup.co.za">info@mokaygroup.co.za</a></li>
@@ -99,8 +88,16 @@ const FOOTER = `
         </ul>
       </div>
     </div>
+    <ul class="foot-links">
+      <li><a href="privacy-policy.html">Privacy Policy</a></li>
+      <li><a href="data-protection.html">Data Protection Notice</a></li>
+      <li><a href="cookie-policy.html">Cookie Policy</a></li>
+      <li><a href="terms-of-use.html">Terms of Use</a></li>
+      <li><a href="disclaimer.html">Disclaimer</a></li>
+      <li><a href="#" data-cookie-settings>Cookie Settings</a></li>
+    </ul>
     <div class="foot-legal">
-      <p>Mokay Group of Companies is a data analytics and operational intelligence company serving mining and resources, industrial and manufacturing, energy and utilities, infrastructure and construction, and logistics and transport operations. GeoCorelytics and SiteSafety are in final development and testing ahead of full deployment.</p>
+      <p>Mokay Group of Companies is a data analytics and operational intelligence company serving mining and resources, industrial and manufacturing, energy and utilities, infrastructure and construction, agriculture and health operations. GeoCorelytics and SiteSafety are in final development and testing ahead of full deployment.</p>
       <div class="foot-bot">
         <span>Copyright © <span data-year>2026</span> Mokay Group of Companies. All rights reserved.</span>
         <span>Established 2023 · Pretoria East, South Africa</span>

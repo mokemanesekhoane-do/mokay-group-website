@@ -16,11 +16,11 @@ Then open http://localhost:5180
 
 ```
 index.html            Home — hero, pillars, who we are, 7 capabilities,
-                      central message, 5 industries, systems, process, CTA
+                      central message, 6 industries, systems, process, CTA
 about.html            About — origin, mission, values, approach, data governance
 solutions.html        The 7 core capabilities in detail
 systems.html          GeoCorelytics & SiteSafety, full 8-part showcase each
-industries.html       The 5 target sectors in detail
+industries.html       The 6 target sectors in detail
 contact.html          Contact cards + discovery-call enquiry form
 
 privacy-policy.html   POPIA-aligned privacy policy (website visitors)
@@ -44,7 +44,7 @@ _archive/             Superseded design direction (gitignored)
 | | |
 |---|---|
 | **What we are** | A data analytics and operational intelligence company |
-| **Sectors** | Mining & Resources · Industrial & Manufacturing · Energy & Utilities · Infrastructure & Construction · Logistics & Transport |
+| **Sectors** | Mining & Resources · Industrial & Manufacturing · Energy & Utilities · Infrastructure & Construction · Agriculture · Health |
 | **Capabilities** | Data Analytics & BI · Operational Intelligence · Performance Monitoring & Reporting · Safety & Risk Analytics · Asset & Equipment Data Management · Custom Digital Platforms & Dashboards · Data Integration & Automation |
 
 Each system on `systems.html` follows the same eight-part structure: operational challenge → solution → how it works → key features → dashboard preview → data captured → business benefits → industry applications.
@@ -75,6 +75,8 @@ document.addEventListener('mokay:consent', e => { /* e.detail */ });
 
 If you add analytics, update the table in `cookie-policy.html` to list the actual cookies.
 
+> **Note on the slider:** `app.js` is a single IIFE. Keep variable names distinct across its sections — an earlier `var current` collision between the slider index and the stored consent object silently broke the hero for any visitor who had already answered the cookie banner.
+
 ## ⚠️ Before going live
 
 **Legal pages need a qualified review.** They are substantive drafts written against POPIA, PAIA, the ECT Act and the Consumer Protection Act, but they have not been reviewed by an admitted attorney. Have them checked against your actual operations before publishing.
@@ -86,6 +88,8 @@ If you add analytics, update the table in `cookie-policy.html` to list the actua
 | Company registration number | `privacy-policy.html`, `terms-of-use.html` |
 | Information Officer name | `privacy-policy.html` |
 
+Health is now a served sector, so `data-protection.html` carries a **special personal information** section (POPIA s26–27). Confirm the lawful ground you intend to rely on before taking on any health engagement.
+
 Under POPIA the Information Officer defaults to the head of the organisation, and must be registered with the Information Regulator.
 
 **Also outstanding:**
@@ -93,7 +97,7 @@ Under POPIA the Information Officer defaults to the head of the organisation, an
 - **Forms are front-end only.** They validate and show a success state but send nothing. Connect Formspree / Netlify Forms / your own endpoint. Both the home page and contact page forms need this.
 - **Social links point at `#`.** Add real URLs or remove them.
 - **Verify the Information Regulator's current contact details** before relying on the reference in the privacy policy — the page links to inforegulator.org.za rather than hardcoding an address, but confirm it is still correct.
-- **Counters** state only verifiable facts (established 2023, 7 capabilities, 5 sectors). Add performance figures only once verified.
+- **Counters** state only verifiable facts (established 2023, 7 capabilities, 6 sectors). Add performance figures only once verified.
 - **GeoCorelytics and SiteSafety** are described as being in final development and testing. Keep that status accurate — `terms-of-use.html` and `disclaimer.html` both rely on it.
 
 ## Images
