@@ -168,4 +168,113 @@
   document.querySelectorAll('[data-year]').forEach(function (el) {
     el.textContent = new Date().getFullYear();
   });
+
+  /* ============================================================
+     COOKIE CONSENT
+     The site currently sets no analytics or marketing cookies. This
+     records the visitor's choice and exposes a gate so anything added
+     later (analytics, embeds) only loads once consent is given.
+     ============================================================ */
+  var STORE = 'mokay-consent';
+  var VERSION = 1;
+
+  var read = function () {
+    try {
+      var raw = localStorage.getItem(STORE);
+      if (!raw) return null;
+      var v = JSON.parse(raw);
+      return v && v.version === VERSION ? v : null;
+    } catch (e) { return null; }
+  };
+  var write = function (prefs) {
+    var record = {
+      version: VERSION,
+      date: new Date().toISOString(),
+      necessary: true,
+      analytics: !!prefs.analytics,
+      functional: !!prefs.functional
+    };
+    try { localStorage.setItem(STORE, JSON.stringify(record)); } catch (e) {}
+    return record;
+  };
+
+  // public gate — window.mokayConsent.allows('analytics')
+  var current = read();
+  window.mokayConsent = {
+    get: function () { return current; },
+    allows: function (category) {
+      if (category === 'necessary') return true;
+      return !!(current && current[category]);
+    },
+    reopen: function () { openBanner(true); }
+  };
+  var announce = function () {
+    try {
+      document.dispatchEvent(new CustomEvent('mokay:consent', { detail: current }));
+    } catch (e) {}
+  };
+
+  var banner = document.querySelector('[data-cookie]');
+  function openBanner(showPrefs) {
+    if (!banner) return;
+    banner.classList.add('show');
+    banner.removeAttribute('hidden');
+    var panel = banner.querySelector('[data-cookie-prefs]');
+    if (panel) panel.classList.toggle('show', !!showPrefs);
+    if (showPrefs) syncBoxes();
+  }
+  function closeBanner() {
+    if (!banner) return;
+    banner.classList.remove('show');
+    var panel = banner.querySelector('[data-cookie-prefs]');
+    if (panel) panel.classList.remove('show');
+  }
+  function syncBoxes() {
+    if (!banner) return;
+    banner.querySelectorAll('input[data-cat]').forEach(function (box) {
+      var cat = box.getAttribute('data-cat');
+      if (cat === 'necessary') { box.checked = true; return; }
+      box.checked = !!(current && current[cat]);
+    });
+  }
+  function save(prefs) {
+    current = write(prefs);
+    announce();
+    closeBanner();
+  }
+
+  if (banner) {
+    if (!current) {
+      // let the page settle before interrupting, and re-check on firing in case
+      // the visitor already answered via the footer link in the meantime
+      setTimeout(function () { if (!current) openBanner(false); }, 900);
+    }
+    banner.addEventListener('click', function (ev) {
+      var act = ev.target.closest('[data-consent]');
+      if (!act) return;
+      ev.preventDefault();
+      var kind = act.getAttribute('data-consent');
+      if (kind === 'accept') return save({ analytics: true, functional: true });
+      if (kind === 'reject') return save({ analytics: false, functional: false });
+      if (kind === 'prefs') {
+        var panel = banner.querySelector('[data-cookie-prefs]');
+        var opening = panel && !panel.classList.contains('show');
+        if (panel) panel.classList.toggle('show');
+        if (opening) syncBoxes();
+        return;
+      }
+      if (kind === 'save') {
+        var prefs = {};
+        banner.querySelectorAll('input[data-cat]').forEach(function (box) {
+          prefs[box.getAttribute('data-cat')] = box.checked;
+        });
+        return save(prefs);
+      }
+    });
+  }
+
+  // "Cookie settings" links anywhere on the site
+  document.querySelectorAll('[data-cookie-settings]').forEach(function (el) {
+    el.addEventListener('click', function (ev) { ev.preventDefault(); openBanner(true); });
+  });
 })();

@@ -1,8 +1,8 @@
 # Mokay Group of Companies — Website
 
-Static marketing site. No build step, no dependencies — plain HTML, one stylesheet, one script.
+Static site for a **data analytics and operational intelligence** company. No build step, no dependencies — plain HTML, one stylesheet, one script.
 
-Layout system referenced from [Techor](https://techor-html.netlify.app/), rebuilt in Montserrat with Mokay's brand colours, logo and copy.
+**Central message:** We make operational data meaningful — enabling organisations to make better decisions, improve performance, manage risk and optimise critical operations.
 
 ## Run locally
 
@@ -15,86 +15,97 @@ Then open http://localhost:5180
 ## Structure
 
 ```
-index.html      Home — hero slider, feature strip, about, services, systems,
-                process, counters, appointment CTA, footer
-about.html      About Us — origin, mission band, values, approach, CTA
-systems.html    Services & Systems — services, GeoCorelytics, SiteSafety, systems, process
-contact.html    Contact — contact cards, enquiry form
+index.html            Home — hero, pillars, who we are, 7 capabilities,
+                      central message, 5 industries, systems, process, CTA
+about.html            About — origin, mission, values, approach, data governance
+solutions.html        The 7 core capabilities in detail
+systems.html          GeoCorelytics & SiteSafety, full 8-part showcase each
+industries.html       The 5 target sectors in detail
+contact.html          Contact cards + discovery-call enquiry form
+
+privacy-policy.html   POPIA-aligned privacy policy (website visitors)
+data-protection.html  Data Protection Notice (client operational data)
+cookie-policy.html    Cookie Policy
+terms-of-use.html     Terms of Use
+disclaimer.html       Website Disclaimer
+
 assets/
-  styles.css    Design system (all tokens in :root at the top)
-  app.js        Nav, sticky header, hero slider, reveals, counters, forms, back-to-top
-  logo.svg      Brand logo, navy wordmark — used on white headers
-  logo-white.svg  Wordmark knocked out to white — used on the navy footer
-  favicon.svg   Logo cropped to the orange mark
-  img/          Photography (see below)
-_archive/clearstreet-version/   Previous design direction, kept for reference
+  styles.css          Design system — tokens in :root at the top
+  app.js              Nav, sticky header, slider, reveals, counters,
+                      forms, back-to-top, cookie consent
+  logo.svg / logo-white.svg / favicon.svg / geocorelytics-logo.png
+  img/                Photography + the conversion script
+_sync-shared.js       Keeps header, footer and cookie banner identical across pages
+_archive/             Superseded design direction (gitignored)
 ```
 
-## Images — final
+## Positioning
 
-All 10 images are in place in `assets/img/` as JPEG. Source PNGs (~20 MB total) were crop-to-fill resized and encoded at quality 82, bringing the set to **1.5 MB**.
+| | |
+|---|---|
+| **What we are** | A data analytics and operational intelligence company |
+| **Sectors** | Mining & Resources · Industrial & Manufacturing · Energy & Utilities · Infrastructure & Construction · Logistics & Transport |
+| **Capabilities** | Data Analytics & BI · Operational Intelligence · Performance Monitoring & Reporting · Safety & Risk Analytics · Asset & Equipment Data Management · Custom Digital Platforms & Dashboards · Data Integration & Automation |
 
-| File | Dimensions | Ratio | Subject | Used on |
-|---|---|---|---|---|
-| `hero-1.jpg` | 1920 × 900 | 32:15 | Open-pit mine, haul trucks, engineer with tablet | Home slide 1, Contact banner |
-| `hero-2.jpg` | 1920 × 900 | 32:15 | Processing plant at golden hour, engineers walking | Home slide 2, About banner |
-| `hero-3.jpg` | 1920 × 900 | 32:15 | Control room operator at plant dashboards | Home slide 3, Services banner |
-| `about-1.jpg` | 840 × 600 | 7:5 | Engineers reviewing data in a site office | Home, About, Contact |
-| `about-2.jpg` | 840 × 1000 | 21:25 | Engineer with tablet, processing plant behind | Home, About |
-| `system-1.jpg` | 840 × 1000 | 21:25 | Drill rig on a mine site at first light | Home, Services |
-| `system-2.jpg` | 840 × 1000 | 21:25 | HSE officer inspecting a processing plant | Home, Services |
-| `system-3.jpg` | 840 × 1000 | 21:25 | Site office, SCADA and plant dashboards | Home, Services |
-| `cta-bg.jpg` | 1920 × 1200 | 8:5 | Mine and processing plant at dusk | CTA band |
-| `counter-bg.jpg` | 1920 × 600 | 16:5 | Conveyor gantry steelwork against sky | Counter / mission bands |
+Each system on `systems.html` follows the same eight-part structure: operational challenge → solution → how it works → key features → dashboard preview → data captured → business benefits → industry applications.
 
-The `about-*` and `system-*` files are exported at 2× their layout size because the large Services and Contact placements render them around 500 px wide — 420 px sources would have looked soft there.
+## Editing shared blocks
 
-The generation prompts that produced these are kept in [`image-brief.md`](image-brief.md) for re-rolls or future additions.
+The header, footer and cookie banner live **once**, in `_sync-shared.js`. Edit them there and run:
 
-### Replacing an image later
+```bash
+node _sync-shared.js
+```
 
-Keep the same filename and aspect ratio, drop it into `assets/img/`, and nothing else needs to change — every `<img>` carries explicit `width`/`height`, so the layout reserves the right space before the image loads. If you change the ratio, update those attributes too.
+It rewrites the content between the `<!-- #HEADER -->`, `<!-- #FOOTER -->` and `<!-- #COOKIE -->` markers on every page, and sets the active nav item from each page's `<body data-page="...">`. Pages remain plain static HTML — this is a one-off helper, not a runtime build step.
 
-To re-run the conversion from a folder of fresh PNGs, the crop-and-encode script (built on .NET `System.Drawing`, no dependencies) is worth keeping alongside your source files.
+## Cookie consent
+
+`app.js` implements a preference centre with three categories (strictly necessary, analytics, functional). The choice is stored in `localStorage` under `mokay-consent`.
+
+**The site currently sets no analytics or marketing cookies.** The banner says so, and the two optional categories are declared as not in use. The gate is ready for when you add something:
+
+```js
+if (window.mokayConsent.allows('analytics')) {
+  // load your analytics here
+}
+// or react to changes
+document.addEventListener('mokay:consent', e => { /* e.detail */ });
+```
+
+If you add analytics, update the table in `cookie-policy.html` to list the actual cookies.
+
+## ⚠️ Before going live
+
+**Legal pages need a qualified review.** They are substantive drafts written against POPIA, PAIA, the ECT Act and the Consumer Protection Act, but they have not been reviewed by an admitted attorney. Have them checked against your actual operations before publishing.
+
+**Fill in the visible placeholders.** These render as highlighted text so they cannot ship unnoticed:
+
+| Placeholder | Where |
+|---|---|
+| Company registration number | `privacy-policy.html`, `terms-of-use.html` |
+| Information Officer name | `privacy-policy.html` |
+
+Under POPIA the Information Officer defaults to the head of the organisation, and must be registered with the Information Regulator.
+
+**Also outstanding:**
+
+- **Forms are front-end only.** They validate and show a success state but send nothing. Connect Formspree / Netlify Forms / your own endpoint. Both the home page and contact page forms need this.
+- **Social links point at `#`.** Add real URLs or remove them.
+- **Verify the Information Regulator's current contact details** before relying on the reference in the privacy policy — the page links to inforegulator.org.za rather than hardcoding an address, but confirm it is still correct.
+- **Counters** state only verifiable facts (established 2023, 7 capabilities, 5 sectors). Add performance figures only once verified.
+- **GeoCorelytics and SiteSafety** are described as being in final development and testing. Keep that status accurate — `terms-of-use.html` and `disclaimer.html` both rely on it.
+
+## Images
+
+10 photographs in `assets/img/`, JPEG at quality 82, 1.5 MB total. Generation prompts are kept in `image-brief.md`. To re-cut from fresh PNGs:
+
+```powershell
+powershell -File assets/img/_convert-images.ps1 -SrcDir "C:\path\to\pngs" -OutDir assets\img
+```
 
 ## Design system
 
-### Colour
+Montserrat throughout. Brand navy `#2E3192`, orange `#E95A29`, body `#5A5E75`, grey band `#F5F6FA`. Container 1140px. Cards use the asymmetric `border-radius: 50px 0 50px 0`. Layout referenced from [Techor](https://techor-html.netlify.app/).
 
-| Role | Techor | Mokay | Token |
-|---|---|---|---|
-| Dark brand — footer, overlays, team band | `#0A165E` | `#2E3192` | `--navy` |
-| Deepest shade | — | `#1B1D66` | `--navy-deep` |
-| Accent — CTAs, eyebrows, icons, ticks | `#2B4DFF` | `#E95A29` | `--orange` |
-| Heading text | `#0F313A` | `#1A1C4A` | `--heading` |
-| Body text | `#585B6F` | `#5A5E75` | `--body` |
-| Gray band | `#F5F6F7` | `#F5F6FA` | `--gray-bg` |
-
-Techor's accent is a blue; Mokay's orange takes that role, so the navy stays structural and the orange does all the pointing.
-
-### Type
-
-**Montserrat** throughout (Google Fonts), replacing Techor's Outfit + Inter pairing. Headings 700 and capitalized (matching Techor's `text-transform: capitalize`), body 400 at 16px/1.75.
-
-### Layout
-
-- Container **1140px**, section padding up to **130px** — both matched to Techor.
-- Signature asymmetric card corner: `border-radius: 50px 0 50px 0` on cards, buttons and images.
-- Service cards measure 258px wide against Techor's 257px; system cards are 420px tall against Techor's 420px.
-- Top bar → sticky header → hero slider → feature strip (overlapping the hero by -60px) → alternating white/gray sections → navy team band → counters → CTA with appointment form → navy footer.
-
-### Behaviour
-
-- **Hero slider** — 3 slides, 6.5s autoplay, arrows + dots, pauses on hover and when the tab is hidden, wraps both directions.
-- **Sticky header** — swaps to fixed past the top bar and inserts a spacer so the page doesn't jump.
-- Scroll reveals, count-ups, back-to-top. All respect `prefers-reduced-motion`.
-
-## Notes before going live
-
-- **Forms are front-end only.** They validate and show a success state but send nothing. Point them at Formspree / Netlify Forms / your own endpoint, or rely on the `mailto:` link. Both the home appointment form and the contact form need this.
-- **Contact details are live**: `+27 60 569 3080` (linked as `tel:+27605693080`) and 16 L'Breeze Estate, Olympus, Pretoria East. They appear in the top bar, the footer of every page, and the Contact page cards — update all of them together if anything changes.
-- **Social links** in the top bar and footer point at `#` — add real URLs or remove.
-- **Counters** are limited to verifiable facts (established 2023, two systems, four-stage engagement). Add performance figures only once verified.
-- No testimonials section was included — the source copy has no verified client quotes.
-
-Source copy: `mokay-group-website-copy.md` (draft v2).
+Mobile is held to a 44px minimum touch target and a 13px minimum font size; inline links inside prose are the one deliberate exception.
