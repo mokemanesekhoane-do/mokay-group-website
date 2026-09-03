@@ -113,6 +113,28 @@ To re-cut from fresh PNGs:
 powershell -File assets/img/_convert-images.ps1 -SrcDir "C:\path\to\pngs" -OutDir assets\img
 ```
 
+## QR code
+
+Two SVGs in `assets/`, both pointing at `https://www.mokaygroup.co.za/`:
+
+| File | Use |
+|---|---|
+| `qr-code.svg` | Branded — navy rounded modules, orange finder centres, Mokay mark inset. For business cards, signage, decks, email signatures. |
+| `qr-code-plain.svg` | Unstyled black-on-white. Fallback for very small print, poor-contrast substrates or fussy scanners. |
+
+Version 4 symbol (33 × 33 modules) at **error correction level H**, which tolerates ~30% damage. The centre mark covers 7.4% of the symbol, well inside that budget, and the quiet zone is the full 4 modules.
+
+Both were verified by rasterising to canvas and decoding with jsQR: they read correctly from 1000px down to 100px, through 1–2px of blur, and at 0°/15°/90°/180° rotation. Scanning fails only past roughly 3px of blur at 300px, which is heavier than any realistic camera capture.
+
+Being SVG they scale losslessly — print at any size. Practical minimum is about 25 mm square on paper.
+
+To regenerate, or to point the code somewhere else:
+
+```bash
+npm install qrcode          # in a scratch folder, not the site
+node assets/_generate-qr.js . "https://www.mokaygroup.co.za/some-page"
+```
+
 ## Design system
 
 Montserrat throughout. Brand navy `#2E3192`, orange `#E95A29`, body `#5A5E75`, grey band `#F5F6FA`. Container 1140px. Cards use the asymmetric `border-radius: 50px 0 50px 0`. Layout referenced from [Techor](https://techor-html.netlify.app/).
