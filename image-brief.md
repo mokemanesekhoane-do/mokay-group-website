@@ -13,15 +13,15 @@ Ten images in `assets/img/`, JPEG quality 82, ~1.5 MB total. These stay.
 | File | Dimensions | Subject | Used on |
 |---|---|---|---|
 | `hero-1.jpg` | 1920 × 900 | Open-pit mine, haul trucks, engineer with tablet | Home slide 1 · Systems banner · Mining sector card |
-| `hero-2.jpg` | 1920 × 900 | Processing plant at golden hour, engineers walking | Home slide 3 · About/Industries banner · Industrial sector card |
+| `hero-2.jpg` | 1920 × 900 | Processing plant at golden hour, engineers walking | Home slide 3 · About banner · Industrial sector card |
 | `hero-3.jpg` | 1920 × 900 | Control room operator at plant dashboards | Home slide 2 · Solutions banner |
 | `about-1.jpg` | 840 × 600 | Engineers reviewing data in a site office | Home · About · Contact |
 | `about-2.jpg` | 840 × 1000 | Engineer with tablet, processing plant behind | Home · About |
 | `system-1.jpg` | 840 × 1000 | Drill rig at first light with technician logging data | Home · Systems · Infrastructure sector card |
 | `system-2.jpg` | 840 × 1000 | HSE officer inspecting a processing plant | Home · Systems |
 | `system-3.jpg` | 840 × 1000 | Site office, SCADA and plant dashboards | Home · Systems · Energy sector card |
-| `cta-bg.jpg` | 1920 × 1200 | Mine and processing plant at dusk | CTA band, all pages |
-| `counter-bg.jpg` | 1920 × 600 | Conveyor gantry steelwork against sky | Counter / mission bands |
+| `cta-bg.jpg` | 1920 × 1200 | Mine and processing plant at dusk | CTA bands · footer CTA · Industries banner |
+| `counter-bg.jpg` | 1920 × 600 | Conveyor gantry steelwork against sky | Counter bands · mission bands · Contact banner · legal banners |
 
 ---
 
@@ -33,6 +33,8 @@ These fill the visual panel on each sector card on `industries.html`. The panel 
 
 Four sectors currently borrow an existing image and two have none. Purpose-shot images for all six would make the page consistent.
 
+The same shortage affects page banners and the two full-width bands — see 1b and 1c below.
+
 | File | Sector | Subject brief | Status |
 |---|---|---|---|
 | `sector-mining.jpg` | Mining & Resources | Open-pit bench with haul truck, wide, mid-morning | *currently borrows `hero-1`* |
@@ -43,6 +45,32 @@ Four sectors currently borrow an existing image and two have none. Purpose-shot 
 | `sector-health.jpg` | Health | Hospital corridor, laboratory bench or medical equipment | **needed** |
 
 For health, avoid identifiable patients entirely — equipment, corridors, laboratory settings, or staff photographed from behind. Patient imagery raises consent issues you do not need.
+
+### Priority 1b — Page banners (4) · **1920 × 900** · 32:15 · **landscape**
+
+Every inner page opens with a banner. There are only three wide images in the library, so pages were sharing them — About and Industries both ran `hero-2`, Systems and Contact both ran `hero-1`. That is now unpicked, but two pages sit on stand-ins rather than a fitting image.
+
+The banner crops hard between breakpoints (3.6:1 on desktop, 1.5:1 on mobile), and the heading sits over the left third at 88% navy. **Keep the subject right of centre and the left third clear.**
+
+| File | Page | Currently | What it should be |
+|---|---|---|---|
+| `banner-about.jpg` | About | `hero-2` — plant, engineers walking | *Adequate.* A people-led shot would be better: the team around a screen, or a working session that reads as "who we are" rather than "a plant". |
+| `banner-systems.jpg` | Systems | `hero-1` — open-pit mine | **Mismatched.** The page is about software. Wants a screen-led shot: dashboards in use on site, or hands on a tablet showing a live interface. |
+| `banner-industries.jpg` | Industries | `cta-bg` — dusk site, stand-in | **Needs its own.** Wants breadth: a wide elevated establishing shot, or a composition reading across more than one sector. Should not look like only mining. |
+| `banner-contact.jpg` | Contact | `counter-bg` — abstract steelwork, stand-in | **Needs its own.** Wants approachability: someone taking a call, a welcoming reception, or a consultant mid-conversation. Human, not industrial. |
+
+Solutions keeps `hero-3` (control room) — that one genuinely fits the page.
+
+### Priority 1c — Band textures (2) · **1920 × 900** · **landscape**
+
+Two full-width navy bands previously had no image at all and rendered flat: the **mission / positioning statement** (four pages) and the **closing CTA** in the footer (every page). Both now carry photography at 20% opacity beneath the navy gradient, currently reusing `counter-bg` and `cta-bg`.
+
+| File | Where | Subject brief |
+|---|---|---|
+| `band-mission.jpg` | "Our Mission" / "Our Position" bands | Abstract and calm — data on glass, a long exposure of plant lighting, or structural geometry. It must not compete with a large statement set over it. |
+| `band-cta.jpg` | Footer CTA, every page | Warm and human at low opacity — a team in discussion, or a site at golden hour. |
+
+These render at 16–22% opacity, so treat both as **texture**: low contrast, no fine detail, nothing recognisable enough to distract. Busy images look like noise at that opacity.
 
 ### Priority 2 — Capability images (3) · **840 × 1000** · 21:25 · **portrait**
 
