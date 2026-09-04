@@ -301,14 +301,14 @@ p{color:var(--body)}
 .sys-card .caption{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:28px 26px;color:#fff;
   transform:translateY(14px);transition:transform .4s}
 .sys-card:hover .caption{transform:translateY(0)}
-.sys-card .caption span{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.1em;
+.sys-card .caption span{display:inline-block;font-size:.82rem;font-weight:700;letter-spacing:.1em;
   text-transform:uppercase;color:#FFB292;margin-bottom:8px}
 .sys-card .caption h3{color:#fff;margin-bottom:8px}
 .sys-card .caption p{color:rgba(255,255,255,.8);font-size:.9rem;line-height:1.6;
   max-height:0;overflow:hidden;opacity:0;transition:max-height .45s,opacity .45s}
 .sys-card:hover .caption p{max-height:120px;opacity:1}
 .sys-card .tag{position:absolute;top:22px;left:22px;z-index:2;background:var(--orange);color:#fff;
-  font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  font-size:.82rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
   padding:7px 14px;border-radius:50px}
 
 /* ---------- process ---------- */
@@ -318,7 +318,7 @@ p{color:var(--body)}
 .step{background:#fff;border:1px solid var(--line);border-radius:50px 0 50px 0;
   padding:36px 28px;position:relative;transition:transform .35s,box-shadow .35s}
 .step:hover{transform:translateY(-6px);box-shadow:var(--shadow-hover)}
-.step .k{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.12em;
+.step .k{display:inline-block;font-size:.82rem;font-weight:700;letter-spacing:.12em;
   text-transform:uppercase;color:var(--orange);margin-bottom:16px}
 .step .circle{width:62px;height:62px;border-radius:50%;background:var(--navy);color:#fff;
   display:grid;place-items:center;font-weight:700;font-size:1.25rem;margin-bottom:22px;transition:.35s}
@@ -338,7 +338,10 @@ p{color:var(--body)}
 
 /* ---------- CTA / appointment ---------- */
 .cta-section{position:relative;overflow:hidden;background:var(--navy)}
-.cta-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.22}
+.cta-bg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;opacity:1}
+/* the copy sits left, so the navy is heaviest there and eases across */
+.cta-section::after{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(100deg,rgba(27,29,102,.92) 0%,rgba(46,49,146,.79) 50%,rgba(46,49,146,.7) 100%)}
 .cta-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;
   gap:clamp(30px,5vw,70px);align-items:start}
 @media(max-width:900px){.cta-inner{grid-template-columns:1fr}}
@@ -419,12 +422,12 @@ p{color:var(--body)}
 
 /* closing call to action, sitting above the footer proper */
 .footer-cta{background:var(--navy);position:relative;overflow:hidden}
-.footer-cta-bg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;opacity:.2}
+/* Photograph at full strength — a single gradient carries legibility.
+   Dimming the image AND overlaying navy multiplies the two, which left
+   the picture surviving at under 3% and reading as flat colour. */
+.footer-cta-bg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;opacity:1}
 .footer-cta::before{content:"";position:absolute;inset:0;z-index:1;
-  background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
-                   linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px),
-                   linear-gradient(100deg,rgba(46,49,146,.86) 0%,rgba(46,49,146,.58) 70%,rgba(27,29,102,.7) 100%);
-  background-size:56px 56px,56px 56px,auto}
+  background:linear-gradient(100deg,rgba(27,29,102,.93) 0%,rgba(46,49,146,.8) 45%,rgba(46,49,146,.56) 100%)}
 .footer-cta::after{content:"";position:absolute;z-index:1;width:420px;height:420px;border-radius:50%;
   background:rgba(233,90,41,.3);filter:blur(90px);right:-90px;top:-170px}
 .footer-cta-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr auto;
@@ -549,14 +552,10 @@ p{color:var(--body)}
 
 /* ---------- central message band ---------- */
 .message-band{background:var(--navy);color:#fff;position:relative;overflow:hidden}
-/* photograph sits under the grid, low enough not to compete with the statement */
-.message-bg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;opacity:.2}
-.message-band::before{content:"";position:absolute;inset:0;z-index:1;
-  background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
-                   linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
-  background-size:72px 72px}
+/* photograph at full strength; the ::after gradient below does the dimming */
+.message-bg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;opacity:1}
 .message-band::after{content:"";position:absolute;inset:0;z-index:1;
-  background:linear-gradient(100deg,rgba(46,49,146,.82) 0%,rgba(46,49,146,.5) 60%,rgba(27,29,102,.62) 100%)}
+  background:linear-gradient(100deg,rgba(27,29,102,.91) 0%,rgba(46,49,146,.78) 55%,rgba(46,49,146,.84) 100%)}
 .message-band .container{position:relative;z-index:2}
 .message-lead{font-size:clamp(1.35rem,2.5vw,2.1rem);font-weight:600;line-height:1.32;
   letter-spacing:-.02em;color:#fff;max-width:22ch}
@@ -629,17 +628,17 @@ p{color:var(--body)}
   display:flex;flex-direction:column;justify-content:flex-end;
   padding:clamp(24px,2.6vw,34px);
 }
-.sector-visual::before{content:"";position:absolute;inset:0;
-  background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),
-                   linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
-  background-size:44px 44px}
-.sector-visual::after{content:"";position:absolute;width:240px;height:240px;border-radius:50%;
+/* gradient only, weighted to the bottom where the sector name sits —
+   the grid texture competed with the photograph */
+.sector-visual::before{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(27,29,102,.5) 0%,rgba(27,29,102,.68) 45%,rgba(27,29,102,.88) 100%)}
+.sector-visual::after{content:"";position:absolute;z-index:1;width:240px;height:240px;border-radius:50%;
   background:rgba(233,90,41,.34);filter:blur(60px);right:-70px;top:-70px;transition:transform .6s}
 .sector:hover .sector-visual::after{transform:scale(1.25)}
-/* a photograph, when one is supplied, sits beneath the gradient */
-.sector-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  opacity:.34;transition:transform .8s cubic-bezier(.2,.7,.3,1),opacity .5s}
-.sector:hover .sector-visual img{transform:scale(1.06);opacity:.42}
+/* the photograph runs at full strength; ::before above does the dimming */
+.sector-visual img{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;
+  opacity:1;transition:transform .8s cubic-bezier(.2,.7,.3,1)}
+.sector:hover .sector-visual img{transform:scale(1.06)}
 .sector-visual > *{position:relative;z-index:2}
 .sector-visual .num{
   position:absolute;top:clamp(16px,2vw,26px);left:clamp(24px,2.6vw,34px);
@@ -653,14 +652,14 @@ p{color:var(--body)}
 }
 .sector:hover .sector-visual .ico{background:var(--orange);border-color:var(--orange)}
 .sector-visual h3{color:#fff;font-size:clamp(1.25rem,1.9vw,1.6rem);letter-spacing:-.02em}
-.sector-visual .kicker{display:block;font-size:.78rem;font-weight:700;letter-spacing:.1em;
+.sector-visual .kicker{display:block;font-size:.82rem;font-weight:700;letter-spacing:.1em;
   text-transform:uppercase;color:#FFB292;margin-bottom:8px}
 
 .sector-body{padding:clamp(26px,3vw,42px)}
 .sector-body > p{font-size:1rem;line-height:1.75;margin-bottom:26px}
 .sector-lists{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,2.4vw,34px)}
 @media(max-width:640px){.sector-lists{grid-template-columns:1fr}}
-.sector-lists h5{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+.sector-lists h5{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
   color:var(--navy);margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--line)}
 .tick-list{list-style:none;display:grid;gap:10px}
 .tick-list li{display:flex;gap:10px;align-items:flex-start;font-size:.92rem;line-height:1.55;color:var(--body)}
@@ -679,7 +678,7 @@ p{color:var(--body)}
   border-radius:50px;padding:11px 20px;transition:.3s;
 }
 .sector-nav a:hover{background:var(--navy);border-color:var(--navy);color:#fff;transform:translateY(-2px)}
-.sector-nav a i{font-style:normal;font-size:.76rem;font-weight:700;color:var(--orange);transition:color .3s}
+.sector-nav a i{font-style:normal;font-size:.82rem;font-weight:700;color:var(--orange);transition:color .3s}
 .sector-nav a:hover i{color:#FFB292}
 
 /* ---------- industry detail rows ---------- */
@@ -687,7 +686,7 @@ p{color:var(--body)}
   padding:clamp(30px,4vw,52px) 0;border-bottom:1px solid var(--line);align-items:start}
 .ind-row:last-child{border-bottom:0}
 @media(max-width:860px){.ind-row{grid-template-columns:1fr;gap:20px}}
-.ind-row .badge{display:inline-flex;align-items:center;gap:10px;font-size:.8rem;font-weight:700;
+.ind-row .badge{display:inline-flex;align-items:center;gap:10px;font-size:.82rem;font-weight:700;
   text-transform:uppercase;letter-spacing:.06em;color:var(--orange);margin-bottom:14px}
 .ind-row h3{margin-bottom:12px}
 .ind-detail{display:grid;grid-template-columns:1fr 1fr;gap:22px}
@@ -712,7 +711,7 @@ p{color:var(--body)}
   background:linear-gradient(180deg,rgba(27,29,102,0) 45%,rgba(27,29,102,.9) 100%)}
 .cap-shot span{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:24px 22px;
   color:#fff;font-weight:600;font-size:1.02rem;letter-spacing:-.01em}
-.cap-shot span i{display:block;font-style:normal;font-size:.8rem;font-weight:700;
+.cap-shot span i{display:block;font-style:normal;font-size:.82rem;font-weight:700;
   letter-spacing:.08em;text-transform:uppercase;color:#FFB292;margin-bottom:6px}
 @media(max-width:900px){.cap-shot span i{font-size:.84rem}}
 
@@ -728,10 +727,10 @@ p{color:var(--body)}
 .sc-block{padding-bottom:clamp(26px,3vw,38px);margin-bottom:clamp(26px,3vw,38px);
   border-bottom:1px solid var(--line)}
 .sc-block:last-child{padding-bottom:0;margin-bottom:0;border-bottom:0}
-.sc-label{display:inline-flex;align-items:center;gap:9px;font-size:.78rem;font-weight:700;
+.sc-label{display:inline-flex;align-items:center;gap:9px;font-size:.82rem;font-weight:700;
   text-transform:uppercase;letter-spacing:.08em;color:var(--orange);margin-bottom:14px}
-.sc-label i{width:22px;height:22px;border-radius:50%;background:var(--orange-soft);
-  display:grid;place-items:center;font-style:normal;font-size:.68rem;color:var(--orange)}
+.sc-label i{width:24px;height:24px;border-radius:50%;background:var(--orange-soft);
+  display:grid;place-items:center;font-style:normal;font-size:.82rem;color:var(--orange)}
 .sc-block > p{font-size:1rem;line-height:1.75;max-width:80ch}
 .sc-two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,3vw,44px)}
 @media(max-width:760px){.sc-two{grid-template-columns:1fr}}
@@ -742,7 +741,7 @@ p{color:var(--body)}
 @media(max-width:520px){.flow{grid-template-columns:1fr}}
 .flow div{background:var(--gray-bg);border-radius:18px 0 18px 0;padding:20px 18px;position:relative}
 .flow div::before{counter-increment:flow;content:counter(flow,decimal-leading-zero);
-  display:block;font-size:.76rem;font-weight:700;color:var(--orange);margin-bottom:8px;letter-spacing:.06em}
+  display:block;font-size:.82rem;font-weight:700;color:var(--orange);margin-bottom:8px;letter-spacing:.06em}
 .flow b{display:block;font-size:.95rem;font-weight:600;color:var(--heading);margin-bottom:5px}
 .flow span{font-size:.85rem;line-height:1.55;color:var(--body)}
 
@@ -764,8 +763,8 @@ p{color:var(--body)}
   border-bottom:1px solid var(--line)}
 .preview-bar i{width:9px;height:9px;border-radius:50%;background:var(--line)}
 .preview-bar i:first-child{background:var(--orange)}
-.preview-bar span{font-size:.76rem;font-weight:600;color:var(--body);margin-left:8px}
-.preview-bar .live{margin-left:auto;font-size:.7rem;font-weight:700;letter-spacing:.06em;
+.preview-bar span{font-size:.82rem;font-weight:600;color:var(--body);margin-left:8px}
+.preview-bar .live{margin-left:auto;font-size:.82rem;font-weight:700;letter-spacing:.06em;
   text-transform:uppercase;color:#1F7A4D;display:flex;align-items:center;gap:6px}
 .preview-bar .live::before{content:"";width:6px;height:6px;border-radius:50%;background:#2FA96B;
   animation:blip 2.2s infinite}
@@ -778,7 +777,7 @@ p{color:var(--body)}
 .legal-toc{position:sticky;top:calc(var(--nav-h) + 20px);background:var(--gray-bg);
   border-radius:20px 0 20px 0;padding:24px 22px}
 @media(max-width:900px){.legal-toc{position:static}}
-.legal-toc h5{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+.legal-toc h5{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
   color:var(--navy);margin-bottom:14px}
 .legal-toc ol{list-style:none;counter-reset:toc;display:grid;gap:9px}
 .legal-toc li{counter-increment:toc}
@@ -828,7 +827,7 @@ p{color:var(--body)}
 .cookie-opt input{width:20px;height:20px;flex:none;margin-top:2px;accent-color:var(--orange)}
 .cookie-opt b{display:block;font-size:.94rem;color:var(--heading);margin-bottom:3px}
 .cookie-opt span{font-size:.86rem;line-height:1.55;color:var(--body)}
-.cookie-opt .locked{font-size:.76rem;font-weight:700;text-transform:uppercase;
+.cookie-opt .locked{font-size:.82rem;font-weight:700;text-transform:uppercase;
   letter-spacing:.05em;color:var(--orange)}
 
 /* ---------- mobile refinements for the positioning components ----------
@@ -858,6 +857,27 @@ p{color:var(--body)}
   .cookie-inner{padding:18px 0}
   .cookie-actions .btn{flex:1 1 auto;justify-content:center}
 }
+
+/* ---------- grid overflow guards ----------
+   Grid and flex children default to min-width:auto, so a wide table or a
+   long <select> option pushes its track past the viewport. These let the
+   tracks actually shrink. */
+.legal > *,
+.about-grid > *,
+.contact-grid > *,
+.message-split > *,
+.cta-inner > *,
+.footer-cta-inner > *,
+.sector > *,
+.sector-lists > *,
+.prose-split > *,
+.product-body > *,
+.frow > *,
+.field{min-width:0}
+
+input,select,textarea{max-width:100%}
+.legal-body table{table-layout:fixed;word-break:break-word}
+.chips span,.tick-list li,.cap ul li{overflow-wrap:anywhere}
 
 /* ---------- reveal (JS-gated so content shows without JS) ---------- */
 .js .reveal{opacity:0;transform:translateY(30px);
