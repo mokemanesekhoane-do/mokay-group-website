@@ -598,9 +598,13 @@ p{color:var(--body)}
   background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .45s}
 .ind:hover::before{transform:scaleX(1)}
 .ind:hover{transform:translateY(-6px);box-shadow:var(--shadow-hover);background:var(--navy);border-color:transparent}
-.ind .num{position:absolute;right:20px;top:16px;font-size:2.2rem;font-weight:800;line-height:1;
-  color:var(--gray-bg);transition:color .35s;letter-spacing:-.04em}
-.ind:hover .num{color:rgba(255,255,255,.13)}
+.ind .num{position:absolute;right:20px;top:18px;
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:38px;height:28px;padding:0 10px;border-radius:8px;
+  background:var(--orange-soft);color:var(--orange);
+  font-size:.82rem;font-weight:800;letter-spacing:.06em;line-height:1;
+  transition:background .35s,color .35s}
+.ind:hover .num{background:rgba(255,255,255,.18);color:#fff}
 .ind .ico{width:54px;height:54px;margin-bottom:18px;border-radius:50%;display:grid;place-items:center;
   background:var(--orange-soft);color:var(--orange);transition:.35s;position:relative;z-index:1}
 .ind:hover .ico{background:rgba(255,255,255,.15);color:#fff}
@@ -640,10 +644,15 @@ p{color:var(--body)}
   opacity:1;transition:transform .8s cubic-bezier(.2,.7,.3,1)}
 .sector:hover .sector-visual img{transform:scale(1.06)}
 .sector-visual > *{position:relative;z-index:2}
+/* solid chip rather than a hollow outline — the outlined numeral read as
+   an artefact over photography */
 .sector-visual .num{
-  position:absolute;top:clamp(16px,2vw,26px);left:clamp(24px,2.6vw,34px);
-  font-size:clamp(3.4rem,6vw,5rem);font-weight:800;line-height:.85;
-  color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.32);letter-spacing:-.04em;
+  position:absolute;top:clamp(18px,2.2vw,28px);left:clamp(24px,2.6vw,34px);
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:42px;height:32px;padding:0 12px;border-radius:9px;
+  background:var(--orange);color:#fff;
+  font-size:.88rem;font-weight:800;letter-spacing:.06em;line-height:1;
+  box-shadow:0 6px 18px rgba(233,90,41,.4);
 }
 .sector-visual .ico{
   width:60px;height:60px;border-radius:50%;display:grid;place-items:center;
@@ -841,7 +850,6 @@ p{color:var(--body)}
   .sector-nav a i{font-size:.84rem}
   .sector-visual{min-height:230px}
   .sector-body{padding:24px 20px}
-  .ind .num{font-size:1.9rem}
   .cookie-opt .locked{font-size:.82rem}
   .chips span{font-size:.88rem}
   .legal-toc{padding:20px 18px}
