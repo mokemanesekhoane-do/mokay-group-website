@@ -103,11 +103,11 @@ Under POPIA the Information Officer defaults to the head of the organisation, an
 
 ## Images
 
-10 photographs in `assets/img/`, JPEG at quality 82, 1.5 MB total.
+23 photographs in `assets/img/`, JPEG at quality 82, 3.0 MB total — every slot the brief called for is filled: three hero slides, four page banners, six sector panels, three capability images, and the supporting band textures.
 
-**The repositioning has outgrown the current set** — it is mining- and plant-heavy, which under-represents four of the six sectors. [`image-brief.md`](image-brief.md) lists what is needed: 6 sector images at 1200×1000, 3 capability images at 840×1000, and two optional additions. Four sector cards currently borrow an existing photograph; Agriculture and Health run on the designed gradient panel alone, which is intentional — the panel looks complete without one.
+[`image-brief.md`](image-brief.md) has the full inventory. Two optional items remain open: a real team photograph for About, and an `og-image.jpg` for social sharing previews.
 
-To re-cut from fresh PNGs:
+To re-cut the whole library from source PNGs:
 
 ```powershell
 powershell -File assets/img/_convert-images.ps1 -SrcDir "C:\path\to\pngs" -OutDir assets\img
