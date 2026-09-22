@@ -366,6 +366,17 @@ p{color:var(--body)}
 .form-ok{display:none;align-items:center;gap:10px;padding:14px 16px;border-radius:8px;
   background:#E9F8F0;border:1px solid #B6E6CE;color:#1F7A4D;font-size:.9rem;font-weight:500}
 .form-ok.show{display:flex}
+.form-err{display:none;align-items:center;gap:10px;padding:14px 16px;border-radius:8px;
+  background:#FDECEC;border:1px solid #F3C4C0;color:#A32620;font-size:.9rem;font-weight:500}
+.form-err.show{display:flex}
+.form-ok svg,.form-err svg{flex:none}
+/* per-field validation — the forms are novalidate, so app.js reports these */
+.field.invalid input,.field.invalid select,.field.invalid textarea{
+  border-color:#C6322B;background:#FFF8F8}
+.field-err{font-size:.82rem;font-weight:500;color:#A32620}
+.form button[type="submit"][disabled]{opacity:.6;cursor:progress;pointer-events:none}
+/* honeypot — off-screen rather than display:none, which some bots skip */
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
 .form-note{font-size:.82rem;color:var(--body);margin-top:10px}
 
 /* ---------- system logo (transparent, flush with the copy) ---------- */

@@ -152,15 +152,155 @@
   }
 
   /* ---------- forms (front-end only) ---------- */
+  /* ============================================================
+     ENQUIRY FORMS
+
+     >>> TO GO LIVE: put your form provider's URL in FORM_ENDPOINT below. <<<
+
+     Formspree needs no server and works on any static host: create a form
+     at formspree.io, then paste its URL here, e.g.
+         var FORM_ENDPOINT = 'https://formspree.io/f/abcdwxyz';
+     Any endpoint that accepts a JSON POST and answers 2xx will work just as
+     well (Netlify Forms, Web3Forms, Getform, your own handler).
+
+     While FORM_ENDPOINT is empty the forms open the visitor's mail client
+     with their answers pre-filled. That is the whole point of the fallback:
+     the form must never report success for something it did not send.
+     ============================================================ */
+  var FORM_ENDPOINT = '';
+  var FORM_MAILTO = 'info@mokaygroup.co.za';
+
+  var fieldOf = function (el) { return el && el.closest ? el.closest('.field') : null; };
+
+  var unflag = function (wrap) {
+    if (!wrap) return;
+    wrap.classList.remove('invalid');
+    var note = wrap.querySelector('.field-err');
+    if (note) note.parentNode.removeChild(note);
+  };
+
+  var clearErrors = function (form) {
+    form.querySelectorAll('.field.invalid').forEach(unflag);
+  };
+
+  var flag = function (el, message) {
+    var wrap = fieldOf(el);
+    if (!wrap || wrap.classList.contains('invalid')) return;
+    wrap.classList.add('invalid');
+    var note = document.createElement('span');
+    note.className = 'field-err';
+    note.textContent = message;
+    wrap.appendChild(note);
+  };
+
+  /* The forms carry `novalidate` so we own the reporting — the browser's own
+     bubbles are inconsistent across engines and cannot be styled. */
+  var validate = function (form) {
+    clearErrors(form);
+    var first = null;
+    form.querySelectorAll('input, select, textarea').forEach(function (el) {
+      if (el.type === 'hidden' || el.name === '_gotcha' || el.disabled) return;
+      if (el.checkValidity()) return;
+      flag(el, !el.value.trim() ? 'This field is required.'
+        : el.type === 'email' ? 'Enter a valid email address.'
+        : 'Please check this value.');
+      if (!first) first = el;
+    });
+    if (first) {
+      first.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+      first.focus({ preventScroll: true });
+    }
+    return !first;
+  };
+
+  var collect = function (form) {
+    var data = {};
+    new FormData(form).forEach(function (value, key) { data[key] = value; });
+    return data;
+  };
+
+  var openMailClient = function (data) {
+    var lines = [];
+    Object.keys(data).forEach(function (key) {
+      if (key.charAt(0) === '_') return;
+      var value = String(data[key]).trim();
+      if (!value) return;
+      lines.push(key.charAt(0).toUpperCase() + key.slice(1) + ': ' + value);
+    });
+    window.location.href = 'mailto:' + FORM_MAILTO +
+      '?subject=' + encodeURIComponent(data._subject || 'Website enquiry') +
+      '&body=' + encodeURIComponent(lines.join('\n'));
+  };
+
   document.querySelectorAll('[data-form]').forEach(function (form) {
+    var btn = form.querySelector('[type="submit"]');
+    var ok = form.querySelector('.form-ok');
+    var okText = form.querySelector('[data-ok-msg]');
+    var err = form.querySelector('[data-err-msg]');
+    var okDefault = okText ? okText.textContent : '';
+    var btnIdle = btn ? btn.innerHTML : '';
+    var sending = false;
+
+    var hide = function () {
+      if (ok) ok.classList.remove('show');
+      if (err) err.classList.remove('show');
+    };
+    var announceResult = function (el, message) {
+      if (!el) return;
+      if (message) el.textContent = message;
+      var box = el.classList.contains('form-ok') || el.classList.contains('form-err') ? el : el.parentNode;
+      box.classList.add('show');
+      box.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+    };
+    var setSending = function (on) {
+      sending = on;
+      if (!btn) return;
+      btn.disabled = on;
+      btn.innerHTML = on ? 'Sending…' : btnIdle;
+    };
+
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
-      var ok = form.querySelector('.form-ok');
-      if (ok) {
-        ok.classList.add('show');
-        ok.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+      if (sending) return;
+      hide();
+      if (!validate(form)) return;
+
+      var data = collect(form);
+      if (data._gotcha) { form.reset(); return; }  // a bot filled the honeypot
+
+      if (!FORM_ENDPOINT) {
+        openMailClient(data);
+        announceResult(okText, 'Opening your email app with these details so you can send them to us. ' +
+          'If nothing opens, email ' + FORM_MAILTO + ' directly.');
+        return;
       }
-      form.reset();
+
+      setSending(true);
+      fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        setSending(false);
+        form.reset();
+        clearErrors(form);
+        announceResult(okText, okDefault);
+      })['catch'](function () {
+        setSending(false);
+        announceResult(err, 'We could not send that just now. Please try again, or email us ' +
+          'directly at ' + FORM_MAILTO + '.');
+      });
+    });
+
+    /* Clear a field's error as soon as the visitor starts correcting it. */
+    form.addEventListener('input', function (ev) {
+      var wrap = fieldOf(ev.target);
+      if (wrap && wrap.classList.contains('invalid')) unflag(wrap);
+    });
+    form.addEventListener('change', function (ev) {
+      var wrap = fieldOf(ev.target);
+      if (wrap && wrap.classList.contains('invalid')) unflag(wrap);
     });
   });
 

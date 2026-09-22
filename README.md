@@ -95,7 +95,13 @@ Under POPIA the Information Officer defaults to the head of the organisation, an
 
 **Also outstanding:**
 
-- **Forms are front-end only.** They validate and show a success state but send nothing. Connect Formspree / Netlify Forms / your own endpoint. Both the home page and contact page forms need this.
+- **Set `FORM_ENDPOINT` in `assets/app.js`** to make the two enquiry forms send. Create a form at [formspree.io](https://formspree.io) and paste its URL:
+
+  ```js
+  var FORM_ENDPOINT = 'https://formspree.io/f/abcdwxyz';
+  ```
+
+  Any endpoint accepting a JSON POST and answering 2xx works — Netlify Forms, Web3Forms, your own handler. **Until it is set, the forms fall back to opening the visitor's mail client** with their answers pre-filled; they never claim to have sent something they did not send. Do a live test submission after setting it.
 - **Social links point at `#`.** Add real URLs or remove them.
 - **Verify the Information Regulator's current contact details** before relying on the reference in the privacy policy — the page links to inforegulator.org.za rather than hardcoding an address, but confirm it is still correct.
 - **Counters** state only verifiable facts (established 2023, 7 capabilities, 6 sectors). Add performance figures only once verified.
