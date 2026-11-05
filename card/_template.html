@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{NAME}} — {{ROLE}} | Mokay Group of Companies</title>
+<meta name="description" content="Digital business card for {{NAME}}, {{ROLE}} at Mokay Group of Companies. Scan the QR code to save the contact, or download the vCard. {{PHONE_DISPLAY}} · {{EMAIL}}">
+<link rel="canonical" href="https://www.mokaygroup.co.za/card/{{SLUG}}">
+<meta name="theme-color" content="#1B1D66">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="{{NAME}} — {{ROLE}}, Mokay Group">
+<meta property="og:description" content="Scan to save the contact. Data analytics and operational intelligence, Pretoria East, South Africa.">
+<meta property="og:url" content="https://www.mokaygroup.co.za/card/{{SLUG}}">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Standalone contact card. Deliberately does NOT load assets/styles.css — this
+   is a self-contained micro-page, not part of the marketing site's layout
+   system. It reuses the brand tokens only. */
+:root{
+  --bg:#EFF0F7;
+  --card:#FFFFFF;
+  --ink:#1A1C4A;
+  --muted:#5A5E75;
+  --line:#E2E4F0;
+  --navy:#2E3192;
+  --navy-deep:#1B1D66;
+  --orange:#E95A29;
+  /* The role badge is 12.5px bold — not WCAG "large text", so it needs 4.5:1.
+     White on brand orange is only 3.52, so the badge deepens the orange. */
+  --role-bg:#CC4A1C;
+  --role-ink:#FFFFFF;
+  --on-navy:rgba(255,255,255,.76);
+  --chip:#F5F6FA;
+  --shadow:0 18px 50px rgba(26,28,74,.14);
+  --display:'Montserrat','Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C0D24;--card:#15163A;--ink:#F2F3FB;--muted:#A7ABC9;
+    --line:rgba(255,255,255,.13);--navy:#3A3FB0;--orange:#FF7A45;
+    --role-bg:#FF7A45;--role-ink:#1B1D66;
+    --chip:rgba(255,255,255,.06);--shadow:0 18px 50px rgba(0,0,0,.5);
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--ink);font-family:var(--display);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:clamp(20px,5vw,56px);
+  display:flex;justify-content:center;align-items:flex-start;
+}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit;text-decoration:none}
+.copy:focus-visible,a:focus-visible{outline:2px solid var(--orange);outline-offset:2px;border-radius:3px}
+
+.card{width:100%;max-width:880px;background:var(--card);
+  border-radius:28px 0 28px 0;box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--line)}
+
+.masthead{background:var(--navy-deep);position:relative;overflow:hidden;padding:22px clamp(22px,4vw,38px)}
+.masthead::after{content:"";position:absolute;right:-70px;top:-90px;width:230px;height:230px;
+  border-radius:50%;background:radial-gradient(circle,rgba(233,90,41,.5),transparent 68%)}
+.masthead-in{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.logo{width:150px;flex:none}
+.tagline{font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--on-navy);text-align:right}
+
+.body{padding:clamp(24px,4vw,40px);display:grid;gap:clamp(24px,3.5vw,38px);grid-template-columns:1fr}
+@media(min-width:760px){.body{grid-template-columns:1fr auto;align-items:start;gap:44px}}
+
+.identity{min-width:0}
+.name{font-size:clamp(1.85rem,5vw,2.6rem);font-weight:800;line-height:1.08;
+  letter-spacing:-.025em;text-wrap:balance;margin-bottom:10px}
+.role{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--role-ink);background:var(--role-bg);padding:7px 13px;border-radius:7px;margin-bottom:14px}
+.org{font-size:1rem;font-weight:600;margin-bottom:4px}
+.org-sub{font-size:.86rem;color:var(--muted);margin-bottom:26px;line-height:1.6;max-width:42ch}
+
+.record{display:flex;flex-direction:column;gap:2px}
+.row{display:grid;grid-template-columns:76px 1fr auto;align-items:center;gap:12px;
+  padding:11px 0;border-top:1px solid var(--line);min-width:0}
+.row:last-child{border-bottom:1px solid var(--line)}
+.row dt{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.val{font-family:var(--mono);font-size:.88rem;font-weight:500;color:var(--ink);
+  font-variant-numeric:tabular-nums;min-width:0;overflow-wrap:anywhere;line-height:1.45}
+.val a{border-bottom:1px solid var(--line)}
+.val a:hover{border-bottom-color:var(--orange)}
+.copy{font-family:var(--display);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);background:var(--chip);border:1px solid var(--line);border-radius:6px;
+  padding:6px 10px;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s,border-color .2s}
+.copy:hover,.copy.done{background:var(--orange);border-color:var(--orange);color:#fff}
+/* On a phone the 76px label column leaves too little room for the email, which
+   then breaks mid-domain. Put the label on its own line instead. */
+@media(max-width:600px){
+  .row{grid-template-columns:1fr auto;grid-template-areas:"label label" "value copy";gap:5px 12px;padding:13px 0}
+  .row dt{grid-area:label}
+  .row .val{grid-area:value}
+  .row .copy{grid-area:copy;align-self:center}
+}
+
+.scan{display:flex;flex-direction:column;align-items:center;gap:14px;min-width:0}
+/* The QR stays dark-on-white in both themes — a scanner needs that contrast. */
+.plate{background:#FFFFFF;padding:14px;border-radius:14px;border:1px solid var(--line);
+  box-shadow:0 6px 20px rgba(26,28,74,.1);width:clamp(220px,62vw,286px)}
+@media(min-width:760px){.plate{width:286px}}
+.scan-note{text-align:center;max-width:26ch}
+.scan-note strong{display:block;font-size:.82rem;font-weight:700;margin-bottom:3px}
+.scan-note span{font-size:.75rem;color:var(--muted);line-height:1.5}
+.save{display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;
+  font-size:.82rem;font-weight:700;letter-spacing:.04em;color:#fff;background:var(--navy);
+  border-radius:9px;padding:13px 18px;transition:background .25s,transform .25s}
+.save:hover{background:var(--orange);transform:translateY(-1px)}
+.save svg{flex:none}
+
+.foot{border-top:1px solid var(--line);padding:14px clamp(22px,4vw,40px);
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.74rem;color:var(--muted)}
+.foot .rule{display:inline-block;width:26px;height:2px;background:var(--orange);vertical-align:middle;margin-right:8px}
+.foot a:hover{color:var(--orange)}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<main class="card">
+  <header class="masthead">
+    <div class="masthead-in">
+      <a class="logo" href="../index.html" aria-label="Mokay Group of Companies — home">
+        <img src="../assets/logo-white.svg" alt="Mokay Group of Companies" width="150" height="37">
+      </a>
+      <div class="tagline">Data Analytics &amp;<br>Operational Intelligence</div>
+    </div>
+  </header>
+
+  <div class="body">
+    <section class="identity">
+      <h1 class="name">{{NAME}}</h1>
+      <div class="role">{{ROLE}}</div>
+      <p class="org">Mokay Group of Companies</p>
+      <p class="org-sub">We make operational data meaningful — so organisations can decide better, perform better and manage risk.</p>
+
+      <dl class="record">
+        <div class="row">
+          <dt>Mobile</dt>
+          <dd class="val"><a href="tel:{{PHONE_E164}}">{{PHONE_DISPLAY}}</a></dd>
+          <button class="copy" type="button" id="copy-phone" data-copy="{{PHONE_E164}}">Copy</button>
+        </div>
+        <div class="row">
+          <dt>Email</dt>
+          <dd class="val"><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></dd>
+          <button class="copy" type="button" id="copy-email" data-copy="{{EMAIL}}">Copy</button>
+        </div>
+        <div class="row">
+          <dt>Office</dt>
+          <dd class="val">16 L&rsquo;Breeze Estate, Olympus,<br>Pretoria East, South Africa</dd>
+          <button class="copy" type="button" id="copy-office" data-copy="16 L’Breeze Estate, Olympus, Pretoria East, South Africa">Copy</button>
+        </div>
+        <div class="row">
+          <dt>Web</dt>
+          <dd class="val"><a href="../index.html">mokaygroup.co.za</a></dd>
+          <button class="copy" type="button" id="copy-web" data-copy="https://www.mokaygroup.co.za">Copy</button>
+        </div>
+      </dl>
+    </section>
+
+    <section class="scan">
+      <div class="plate">
+        <img src="../assets/qr-{{SLUG}}.svg" alt="QR code containing {{NAME}}'s contact details" width="286" height="286">
+      </div>
+      <p class="scan-note">
+        <strong>Point your camera here</strong>
+        <span>Adds {{FIRST_NAME}} to your contacts — name, role, mobile, email and website. Works offline.</span>
+      </p>
+      <a class="save" href="../assets/{{SLUG}}.vcf" download="{{VCF_NAME}}.vcf" type="text/vcard">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Save to contacts
+      </a>
+    </section>
+  </div>
+
+  <footer class="foot">
+    <span><span class="rule"></span>Mokay Group of Companies</span>
+    <span><a href="../contact.html">Contact</a> &middot; <a href="../privacy-policy.html">Privacy</a></span>
+  </footer>
+</main>
+
+<script>
+(function(){
+  'use strict';
+  var selectFallback = function (btn) {
+    var row = btn.closest('.row');
+    var val = row && row.querySelector('.val');
+    if (!val) return false;
+    try {
+      var r = document.createRange();
+      r.selectNodeContents(val);
+      var s = window.getSelection();
+      s.removeAllRanges();
+      s.addRange(r);
+      return true;
+    } catch (e) { return false; }
+  };
+
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    var idle = btn.textContent;
+    var timer = null;
+    btn.addEventListener('click', function () {
+      var text = btn.getAttribute('data-copy') || '';
+      var settle = function (label) {
+        if (timer) clearTimeout(timer);
+        btn.textContent = label;
+        btn.classList.add('done');
+        timer = setTimeout(function () {
+          btn.textContent = idle;
+          btn.classList.remove('done');
+        }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { settle('Copied'); })
+          ['catch'](function () { settle(selectFallback(btn) ? 'Selected' : 'Press Ctrl+C'); });
+      } else {
+        settle(selectFallback(btn) ? 'Selected' : 'Press Ctrl+C');
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -125,11 +125,31 @@ powershell -File assets/img/_convert-images.ps1 -SrcDir "C:\path\to\pngs" -OutDi
 
 A standalone contact card: Mokay masthead, the person's details as labelled values with copy buttons, a vCard QR, and a `.vcf` download.
 
+**All three files per person are generated.** Don't hand-edit them — edit the manifest and re-run:
+
+```bash
+npm install qrcode          # in a scratch folder, not the site
+node card/_generate-card.js
+```
+
 | File | What it is |
 |---|---|
-| `card/mothae-namane.html` | The page. Self-contained CSS — deliberately does **not** load `assets/styles.css`. |
-| `assets/qr-mothae-namane.svg` | The QR. Encodes a full vCard, so scanning adds the contact with no internet. |
-| `assets/mothae-namane.vcf` | The download. Same details plus the office address. |
+| `card/_people.json` | **The source of truth.** Add a person here. |
+| `card/_generate-card.js` | The generator. Rewrites every card from the manifest. |
+| `card/_template.html` | The page template. Edit to change the design for everyone. |
+| `card/mothae-namane.html` | Generated page. Self-contained CSS — deliberately does **not** load `assets/styles.css`. |
+| `assets/qr-mothae-namane.svg` | Generated QR. Encodes a full vCard, so scanning adds the contact with no internet. |
+| `assets/mothae-namane.vcf` | Generated download. Same details plus the office address. |
+
+Adding someone is one entry:
+
+```json
+{ "slug": "nomsa-dlamini", "first": "Nomsa", "last": "Dlamini",
+  "role": "Chief Technology Officer", "phone": "+27 82 111 2233",
+  "email": "cto@mokaygroup.co.za" }
+```
+
+The slug becomes the URL (`/card/nomsa-dlamini`) and the asset filenames. The generator throws rather than writing a broken card if a template placeholder goes unfilled or a slug isn't URL-safe.
 
 The QR omits the office address to keep the symbol at 61 modules (version 11, ECC M); the `.vcf` includes it. Verified by rasterising and decoding with jsQR: reads from 700px down to 200px, tolerates 2px of blur.
 
@@ -137,7 +157,7 @@ The card lives in `card/`, so `_sync-shared.js` — which only reads the top lev
 
 Unlike the rest of the site, the card follows `prefers-color-scheme` and has a dark mode. It is usually opened standalone from a scan or a link rather than browsed to, so it respects the phone's theme. The QR plate stays white in both.
 
-**To add another person:** copy the HTML, swap the four contact rows and the name, then regenerate the QR and vCard. Both are produced by a script — ask and it can be committed alongside.
+The generator is verified against the committed card: re-running it reproduces all three of Mothae's files byte-for-byte, so a clean `git diff` means the manifest and the output are still in step.
 
 ## QR code
 

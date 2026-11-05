@@ -1,0 +1,22 @@
+{
+  "_comment": "Source of truth for the digital business cards. Edit this, then run: node card/_generate-card.js",
+
+  "org": {
+    "name": "Mokay Group of Companies",
+    "url": "https://www.mokaygroup.co.za",
+    "street": "16 L'Breeze Estate, Olympus",
+    "city": "Pretoria East",
+    "country": "South Africa"
+  },
+
+  "people": [
+    {
+      "slug": "mothae-namane",
+      "first": "Mothae",
+      "last": "Namane",
+      "role": "Operations Director",
+      "phone": "+27 81 532 9058",
+      "email": "coo@mokaygroup.co.za"
+    }
+  ]
+}
