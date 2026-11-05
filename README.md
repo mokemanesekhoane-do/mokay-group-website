@@ -119,6 +119,26 @@ To re-cut the whole library from source PNGs:
 powershell -File assets/img/_convert-images.ps1 -SrcDir "C:\path\to\pngs" -OutDir assets\img
 ```
 
+## Digital business cards
+
+`card/mothae-namane.html` → **mokaygroup.co.za/card/mothae-namane**
+
+A standalone contact card: Mokay masthead, the person's details as labelled values with copy buttons, a vCard QR, and a `.vcf` download.
+
+| File | What it is |
+|---|---|
+| `card/mothae-namane.html` | The page. Self-contained CSS — deliberately does **not** load `assets/styles.css`. |
+| `assets/qr-mothae-namane.svg` | The QR. Encodes a full vCard, so scanning adds the contact with no internet. |
+| `assets/mothae-namane.vcf` | The download. Same details plus the office address. |
+
+The QR omits the office address to keep the symbol at 61 modules (version 11, ECC M); the `.vcf` includes it. Verified by rasterising and decoding with jsQR: reads from 700px down to 200px, tolerates 2px of blur.
+
+The card lives in `card/`, so `_sync-shared.js` — which only reads the top level — leaves it alone. It has no header/footer markers and takes no site nav.
+
+Unlike the rest of the site, the card follows `prefers-color-scheme` and has a dark mode. It is usually opened standalone from a scan or a link rather than browsed to, so it respects the phone's theme. The QR plate stays white in both.
+
+**To add another person:** copy the HTML, swap the four contact rows and the name, then regenerate the QR and vCard. Both are produced by a script — ask and it can be committed alongside.
+
 ## QR code
 
 Two SVGs in `assets/`, both pointing at `https://www.mokaygroup.co.za/`:
