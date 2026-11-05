@@ -65,9 +65,23 @@ function vcard(person, withAddress) {
 
 const e164 = phone => phone.replace(/[^\d+]/g, '');
 
+/* The Mokay mark, nested from favicon.svg (the logo cropped to the emblem).
+   No overflow="visible" — the nested viewport must clip to its viewBox so only
+   the mark shows. Browsers clip by default, but print RIPs and vector editors
+   honour an explicit visible and would bleed the wordmark across the symbol. */
+function markSvg(x, y, size) {
+  const src = fs.readFileSync(path.join(ROOT, 'assets', 'favicon.svg'), 'utf8');
+  const viewBox = (src.match(/viewBox="([^"]+)"/) || [])[1];
+  const inner = src
+    .replace(/^[\s\S]*?<svg[^>]*>/, '')
+    .replace(/<\/svg>\s*$/, '')
+    .trim();
+  return `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="${viewBox}">${inner}</svg>`;
+}
+
 /* ---- QR ------------------------------------------------------------- */
-function qrSvg(payload, label) {
-  const qr = QRCode.create(payload, { errorCorrectionLevel: 'M' });
+function qrSvg(payload, label, ecc) {
+  const qr = QRCode.create(payload, { errorCorrectionLevel: ecc || 'M' });
   const N = qr.modules.size;
   const data = qr.modules.data;
   const SIZE = N + QZ * 2;
@@ -77,11 +91,21 @@ function qrSvg(payload, label) {
   const inFinder = (x, y) => finders.some(([fx, fy]) =>
     x >= fx && x < fx + 7 && y >= fy && y < fy + 7);
 
+  /* Centre emblem. Kept to an odd module count so it sits on the symbol's
+     centre module rather than straddling two. The modules underneath are
+     dropped, so the error-correction level has to absorb them: at ~18% of the
+     width this covers ~3% of the symbol against ECC M's ~15% budget. */
+  let LOGO = Math.round(N * 0.18);
+  if (LOGO % 2 === 0) LOGO += 1;
+  const L0 = Math.floor((N - LOGO) / 2);
+  const inLogo = (x, y) => x >= L0 && x < L0 + LOGO && y >= L0 && y < L0 + LOGO;
+
   let rects = '';
-  let dark = 0;
+  let dark = 0, covered = 0;
   for (let y = 0; y < N; y++) {
     for (let x = 0; x < N; x++) {
       if (!at(x, y) || inFinder(x, y)) continue;
+      if (inLogo(x, y)) { covered++; continue; }
       dark++;
       rects += `<rect x="${x + QZ}" y="${y + QZ}" width="1" height="1" rx="${RX}"/>`;
     }
@@ -95,13 +119,24 @@ function qrSvg(payload, label) {
     eyes += `<rect x="${X + 2}" y="${Y + 2}" width="3" height="3" rx="0.9" fill="${ORANGE}"/>`;
   }
 
+  const pad = 0.9;
+  const lx = L0 + QZ, ly = L0 + QZ;
+  const emblem =
+    `<rect x="${lx - pad}" y="${ly - pad}" width="${LOGO + pad * 2}" height="${LOGO + pad * 2}" rx="2.2" fill="#FFFFFF"/>` +
+    markSvg(lx + 0.6, ly + 0.6, LOGO - 1.2);
+
   const svg =
     `<svg class="qr" viewBox="0 0 ${SIZE} ${SIZE}" xmlns="http://www.w3.org/2000/svg" ` +
     `role="img" aria-label="QR code containing ${label}'s contact details">` +
     `<rect width="${SIZE}" height="${SIZE}" fill="#FFFFFF"/>` +
-    `<g fill="${NAVY}" shape-rendering="geometricPrecision">${rects}</g>${eyes}</svg>`;
+    `<g fill="${NAVY}" shape-rendering="geometricPrecision">${rects}</g>${eyes}${emblem}</svg>`;
 
-  return { svg, version: qr.version, modules: N, dark };
+  return {
+    svg, version: qr.version, modules: N, dark,
+    ecc: ecc || 'M',
+    logo: LOGO,
+    coveragePct: +(LOGO * LOGO / (N * N) * 100).toFixed(1)
+  };
 }
 
 /* ---- page ----------------------------------------------------------- */
@@ -138,7 +173,7 @@ for (const person of manifest.people) {
   }
   const name = `${person.first} ${person.last}`;
 
-  const qr = qrSvg(vcard(person, false), name);
+  const qr = qrSvg(vcard(person, false), name, process.env.CARD_ECC);
   fs.writeFileSync(path.join(ROOT, 'assets', `qr-${person.slug}.svg`), qr.svg);
   fs.writeFileSync(path.join(ROOT, 'assets', `${person.slug}.vcf`), vcard(person, true) + '\r\n', 'utf8');
   fs.writeFileSync(path.join(ROOT, 'card', `${person.slug}.html`), page(person));
@@ -146,7 +181,8 @@ for (const person of manifest.people) {
   report.push(
     `${name}\n` +
     `  page    card/${person.slug}.html  ->  /card/${person.slug}\n` +
-    `  qr      assets/qr-${person.slug}.svg  (version ${qr.version}, ${qr.modules} modules, ECC M, ${qr.dark} dark)\n` +
+    `  qr      assets/qr-${person.slug}.svg  (v${qr.version}, ${qr.modules} modules, ECC ${qr.ecc}, ` +
+      `emblem ${qr.logo}x${qr.logo} covering ${qr.coveragePct}%)\n` +
     `  vcard   assets/${person.slug}.vcf  (includes the postal address)`
   );
 }

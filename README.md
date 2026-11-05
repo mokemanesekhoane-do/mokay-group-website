@@ -153,7 +153,17 @@ Adding someone is one entry:
 
 The slug becomes the URL (`/card/nomsa-dlamini`) and the asset filenames. The generator throws rather than writing a broken card if a template placeholder goes unfilled or a slug isn't URL-safe.
 
-The QR omits the office address to keep the symbol at 61 modules (version 11, ECC M); the `.vcf` includes it. Verified by rasterising and decoding with jsQR: reads from 700px down to 200px, tolerates 2px of blur.
+The QR omits the office address to keep the symbol at 61 modules (version 11, ECC M); the `.vcf` includes it. It carries the Mokay emblem at its centre, nested from `assets/favicon.svg`, covering 3.3% of the symbol against ECC M's ~15% recovery budget.
+
+**On the error-correction level.** The instinct is that a QR with a logo needs ECC H. Measured, the opposite holds here: H pushes the symbol to 81 modules, and the smaller modules cost more legibility than the extra correction buys back. Generating the same payload at all three levels and decoding each with jsQR:
+
+| ECC | Modules | Sizes decoded | Minimum | Blur |
+|---|---|---|---|---|
+| **M** | 61 | 6/7 | 200px | 2px |
+| Q | 69 | 5/7 | 240px | 2px |
+| H | 81 | 4/7, erratic | — | fails at 0px |
+
+Set `CARD_ECC=Q` or `CARD_ECC=H` to re-measure if the payload grows — a longer vCard changes the trade-off. The emblem scales with the symbol, so coverage stays near 3% at every level.
 
 The card lives in `card/`, so `_sync-shared.js` — which only reads the top level — leaves it alone. It has no header/footer markers and takes no site nav.
 
