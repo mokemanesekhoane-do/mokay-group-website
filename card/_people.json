@@ -17,6 +17,15 @@
       "role": "Operations Director",
       "phone": "+27 81 532 9058",
       "email": "coo@mokaygroup.co.za"
+    },
+    {
+      "slug": "sekhoane-mokemane",
+      "first": "Sekhoane",
+      "last": "Mokemane",
+      "role": "Director - Business Growth Strategist (Africa)",
+      "phone": "+27 60 569 3080",
+      "email": "bgs@mokaygroup.co.za",
+      "photo": true
     }
   ]
 }

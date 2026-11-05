@@ -154,6 +154,19 @@ function page(person) {
   };
 
   let out = template;
+
+  /* The portrait is optional. alt="" because the name is the very next
+     element — a screen reader announcing it twice helps nobody. When there is
+     no photo the whole line goes, rather than leaving a blank one behind. */
+  if (person.photo) {
+    out = out.split('{{PHOTO}}').join(
+      `<div class="portrait"><img src="../assets/photo-${person.slug}.jpg" alt="" ` +
+      `width="560" height="560" decoding="async"></div>`
+    );
+  } else {
+    out = out.replace(/\n[ \t]*\{\{PHOTO\}\}/g, '').split('{{PHOTO}}').join('');
+  }
+
   for (const [key, value] of Object.entries(values)) {
     out = out.split(`{{${key}}}`).join(value);
   }

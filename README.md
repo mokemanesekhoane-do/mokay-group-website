@@ -148,8 +148,10 @@ Adding someone is one entry:
 ```json
 { "slug": "nomsa-dlamini", "first": "Nomsa", "last": "Dlamini",
   "role": "Chief Technology Officer", "phone": "+27 82 111 2233",
-  "email": "cto@mokaygroup.co.za" }
+  "email": "cto@mokaygroup.co.za", "photo": true }
 ```
+
+`"photo": true` renders a circular portrait above the name; drop the key and the card lays out without one. The generator expects `assets/photo-<slug>.jpg` — square, 560 × 560, cropped to head and shoulders.
 
 The slug becomes the URL (`/card/nomsa-dlamini`) and the asset filenames. The generator throws rather than writing a broken card if a template placeholder goes unfilled or a slug isn't URL-safe.
 

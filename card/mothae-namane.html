@@ -73,10 +73,20 @@ a{color:inherit;text-decoration:none}
 @media(min-width:760px){.body{grid-template-columns:1fr auto;align-items:start;gap:44px}}
 
 .identity{min-width:0}
+/* Optional portrait. Sits above the name at every width rather than beside it:
+   a photo-and-name row leaves too little for a long name on a 360px card. */
+.portrait{width:104px;height:104px;border-radius:50%;overflow:hidden;margin-bottom:16px;
+  box-shadow:0 0 0 3px var(--card),0 0 0 5px var(--orange),0 8px 22px rgba(26,28,74,.18);
+  background:var(--chip)}
+.portrait img{width:100%;height:100%;object-fit:cover;display:block}
 .name{font-size:clamp(1.85rem,5vw,2.6rem);font-weight:800;line-height:1.08;
   letter-spacing:-.025em;text-wrap:balance;margin-bottom:10px}
-.role{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--role-ink);background:var(--role-bg);padding:7px 13px;border-radius:7px;margin-bottom:14px}
+/* Sentence case rather than letterspaced caps: titles here run from two words
+   to six, and caps at .1em tracking wraps a six-word title onto three lines on
+   a phone — a three-line solid badge reads as a block, not a label. */
+.role{display:inline-block;max-width:100%;font-size:.84rem;font-weight:700;letter-spacing:.005em;
+  line-height:1.4;text-wrap:balance;
+  color:var(--role-ink);background:var(--role-bg);padding:8px 14px;border-radius:8px;margin-bottom:14px}
 .org{font-size:1rem;font-weight:600;margin-bottom:4px}
 .org-sub{font-size:.86rem;color:var(--muted);margin-bottom:26px;line-height:1.6;max-width:42ch}
 
