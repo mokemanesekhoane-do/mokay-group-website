@@ -123,6 +123,8 @@ powershell -File assets/img/_convert-images.ps1 -SrcDir "C:\path\to\pngs" -OutDi
 
 `card/mothae-namane.html` → **mokaygroup.co.za/card/mothae-namane**
 
+> The extensionless URL depends on the rewrite in `vercel.json`. Vercel does **not** strip `.html` by default — unlike `npx serve`, which does, so a card URL that works locally can still 404 in production. The rewrite is scoped to `/card/` deliberately: turning on site-wide `cleanUrls` would 308-redirect every existing `.html` link on the site. `/card/<slug>.html` keeps working either way, because Vercel checks the filesystem before applying rewrites.
+
 A standalone contact card: Mokay masthead, the person's details as labelled values with copy buttons, a vCard QR, and a `.vcf` download.
 
 **All three files per person are generated.** Don't hand-edit them — edit the manifest and re-run:

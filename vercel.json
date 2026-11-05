@@ -1,0 +1,19 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+
+  "comment": "Business-card pages are handed out verbally and printed, so they get extensionless URLs: /card/mothae-namane serves card/mothae-namane.html. Scoped to /card/ on purpose — site-wide cleanUrls would 308-redirect every existing .html link, and all of this site's internal links use the extension. Vercel checks the filesystem before applying rewrites, so /card/mothae-namane.html keeps working directly and does not fall through to this rule.",
+
+  "rewrites": [
+    { "source": "/card/:slug", "destination": "/card/:slug.html" }
+  ],
+
+  "headers": [
+    {
+      "source": "/assets/(.*).vcf",
+      "headers": [
+        { "key": "Content-Type", "value": "text/vcard; charset=utf-8" },
+        { "key": "Content-Disposition", "value": "attachment" }
+      ]
+    }
+  ]
+}
